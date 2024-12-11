@@ -10,4 +10,6 @@ func SetRoutes(app *fiber.App) {
 
 	api.Get("/items", handlers.GetAllItems)
 	api.Post("/items", handlers.GetSelectItem)
+	api.Post("/user", handlers.AddUser)
+	api.Get("/user/:id", handlers.GetUserCart)
 }

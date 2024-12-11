@@ -13,9 +13,9 @@ type Item struct {
 	Quantity    int      `json:"quantity"`
 }
 
-type Customer struct {
-	CustomerID uuid.UUID `json:"id"`
-	Cart       []Item    `json:"cart"`
+type User struct {
+	UserID uuid.UUID `json:"id"`
+	Cart   []Item    `json:"cart"`
 }
 
 // TODO: Have to create the Order type

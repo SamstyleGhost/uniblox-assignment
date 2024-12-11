@@ -1,13 +1,15 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
-import { v4 as uuidV4} from "uuid";
+import { UUIDTypes, v4 as uuidV4} from "uuid";
 import { useUserContext } from "./context";
 import { Route, Routes } from "react-router";
 import { Homepage } from "./pages";
+import axios from "axios";
 
 function App() {
   
   const { setCustomerID } = useUserContext();
+  const [isLoading, setIsLoading] = useState(true);
   
   // I am making use of localStorage.
   // When the user enters the first time, a new uuid will be generated and set. Next time, the same id will be used for the user.
@@ -15,12 +17,28 @@ function App() {
   useEffect(() => {
     const customer_id: string | null = localStorage.getItem("assignment_customer_id");
     setCustomerID(customer_id);
+    
+    // The following if condition will be true when user visits the website first time (in real worlds, when they sign up instead of log in)
     if(!customer_id) {
-      const cid = uuidV4();
+      const cid : UUIDTypes = uuidV4();
       localStorage.setItem("assignment_customer_id", cid);
-      setCustomerID(cid);
+        axios.post("http://localhost:5000/api/v1/user", {
+          id: cid
+        }).then(function (res) {
+          console.log(res);
+          setCustomerID(cid);
+        }).catch(function (err) {
+          // ! Technically there would be more error handling here
+          console.log(err)
+        })
     }
+    
+    setIsLoading(false);
   }, [setCustomerID])
+  
+  if(isLoading) {
+    return <div>Loading</div>
+  }
 
   return (
     <div className="w-full min-h-screen h-full flex justify-center bg-background text-text">
