@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
+    "items": [
+      {
+        "id": 2,
+        "quantity": 5
+      }
+    ],
+    "order_value": 54.949997,
+    "discount": 0
+  }
+]
