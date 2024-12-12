@@ -1,13 +1,8 @@
 [
   {
     "id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
-    "cart": [
-      {
-        "id": 2,
-        "quantity": 5
-      }
-    ],
-    "total_cart_value": 54.949997
+    "cart": [],
+    "total_cart_value": 0
   },
   {
     "id": "85090ac9-9066-4979-8a64-91b4a6016bbc",

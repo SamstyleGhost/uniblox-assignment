@@ -102,7 +102,7 @@ func RemoveItemFromCart(c *fiber.Ctx) {}
 func Checkout(c *fiber.Ctx) error {
 
 	payload := struct {
-		ID uuid.UUID `json:"id"`
+		ID uuid.UUID `json:"user_id"`
 	}{}
 
 	// Would return error if the request body is not set correctly
@@ -110,12 +110,8 @@ func Checkout(c *fiber.Ctx) error {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,
 			"error":   err.Error(),
-			"message": "Incorrect ID",
 		})
 	}
-
-	// Check for discount
-	// if discount is applied then return discounted price
 
 	user, err := helpers.GetUserCart(payload.ID)
 	if err != nil {
@@ -125,11 +121,31 @@ func Checkout(c *fiber.Ctx) error {
 		})
 	}
 
+	// Check for discount
+	// if discount is applied then return discounted price
+	discount, totalPrice := helpers.DiscountCart(user.CartValue)
+
+	// Add to orders.json
+	if err := helpers.AddOrder(payload.ID, user.Cart, totalPrice, discount); err != nil {
+		return c.Status(500).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+		})
+	}
+
+	// Empty cart & revise cart_value to 0
+	if err := helpers.EmptyCart(payload.ID); err != nil {
+		return c.Status(500).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+		})
+	}
+
 	return c.Status(200).JSON(&fiber.Map{
-		"success":     true,
-		"cart":        user.Cart,
-		"total_price": user.CartValue,
+		"success":        true,
+		"cart":           user.Cart,
+		"original_price": user.CartValue,
+		"discount":       discount,
+		"total_price":    totalPrice,
 	})
 }
-
-func DiscountCart(c *fiber.Ctx) {}
