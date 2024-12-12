@@ -11,33 +11,6 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-// This is a helper function used to traverse the items.json file
-func TraverseItems() ([]models.Item, error) {
-
-	pathToItemsFile, _ := filepath.Abs("data/items.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	itemsFile, err := os.Open(pathToItemsFile)
-	if err != nil {
-		return nil, err
-	}
-
-	defer itemsFile.Close()
-
-	byteValue, err := io.ReadAll(itemsFile)
-	if err != nil {
-		return nil, err
-	}
-
-	var items []models.Item
-
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-	err = json.Unmarshal(byteValue, &items)
-	if err != nil {
-		return nil, err
-	}
-
-	return items, nil
-}
-
 func AddUserToUsers(id uuid.UUID) error {
 
 	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
@@ -62,7 +35,7 @@ func AddUserToUsers(id uuid.UUID) error {
 
 	newUser := new(models.User)
 	newUser.UserID = id
-	newUser.Cart = []models.Item{}
+	newUser.Cart = []models.CartItem{}
 
 	users = append(users, *newUser)
 
@@ -109,8 +82,7 @@ func TraverseUsers(id uuid.UUID) ([]models.User, error) {
 	return users, nil
 }
 
-// TODO: Check for quantities present in the
-func AddItemToCart(userID uuid.UUID, item models.Item) ([]models.Item, error) {
+func AddItemToCart(userID uuid.UUID, itemID int, quantity int) ([]models.CartItem, error) {
 	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
 	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
@@ -134,8 +106,18 @@ func AddItemToCart(userID uuid.UUID, item models.Item) ([]models.Item, error) {
 
 	for i, user := range users {
 		if user.UserID == userID {
-			users[i].Cart = append(users[i].Cart, item)
-			users[i].CartValue += item.Price
+
+			requestedItem, err := FindSelectedItem(itemID)
+			itemToAdd := new(models.CartItem)
+			itemToAdd.ItemID = itemID
+			itemToAdd.Quantity = quantity
+
+			if err != nil {
+				return nil, err
+			}
+
+			users[i].Cart = append(users[i].Cart, *itemToAdd)
+			users[i].CartValue += requestedItem.Price * float32(quantity)
 			updatedUsers, err := json.MarshalIndent(users, "", "  ")
 			if err != nil {
 				return nil, err

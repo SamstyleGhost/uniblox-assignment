@@ -1,8 +1,13 @@
 [
   {
     "id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
-    "cart": [],
-    "total_cart_value": 0
+    "cart": [
+      {
+        "id": 2,
+        "quantity": 5
+      }
+    ],
+    "total_cart_value": 54.949997
   },
   {
     "id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
@@ -11,19 +16,8 @@
   },
   {
     "id": "39490ad6-7cc2-42f6-8887-3f29749dbb42",
-    "cart": [
-      {
-        "id": 1,
-        "name": "Office Char",
-        "vendor": "Charicee Companies",
-        "description": "An office chair, or desk chair, is a type of chair that is designed for use at a desk in an office. It is usually a swivel chair, with a set of wheels for mobility and adjustable height. Modern office chairs typically use a single, distinctive load bearing leg (often called a gas lift), which is positioned underneath the chair seat. Near the floor this leg spreads out into several smaller feet, which are often wheeled and called casters. Office chairs were developed around the mid-19th century as more workers spent their shifts sitting at a desk, leading to the adoption of several features not found on other chairs.",
-        "images": [],
-        "three_link": "https://fab.com/s/2cf83e2ac5e8",
-        "price": 5.99,
-        "quantity": 50
-      }
-    ],
-    "total_cart_value": 5.99
+    "cart": [],
+    "total_cart_value": 0
   },
   {
     "id": "82aa07b3-e962-4246-a162-f278940b4720",
