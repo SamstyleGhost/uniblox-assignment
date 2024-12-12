@@ -6,3 +6,4 @@
 ## TODO:
 - The status codes returned for some of the conditions is not right (in the API endpoints)
 - Will have to optimize some endpoints as there is some repeated work being done (these would be easier and more efficient using a database)
+- Right now, the add to cart enpoint sends back an item again which is added to cart, but will have to change it so that the user only sends back the itemID, which will allow the cart to be consistent with the items as the user should not be able to change the prices and other values in the payload sent

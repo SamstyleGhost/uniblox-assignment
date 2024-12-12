@@ -99,6 +99,8 @@ func AddUser(c *fiber.Ctx) error {
 
 }
 
+// Request : User ID as the url param
+// Response : Return the user's cart
 func GetUserCart(c *fiber.Ctx) error {
 	userParam := c.Params("id")
 
@@ -126,6 +128,7 @@ func GetUserCart(c *fiber.Ctx) error {
 	})
 }
 
+// Request: Item to be added & the user id
 func AddItemToCart(c *fiber.Ctx) error {
 
 	payload := struct {
@@ -147,7 +150,6 @@ func AddItemToCart(c *fiber.Ctx) error {
 		return c.Status(500).JSON(&fiber.Map{
 			"success": false,
 			"error":   err.Error(),
-			"message": "Payload structure incorrect",
 		})
 	}
 
@@ -159,4 +161,37 @@ func AddItemToCart(c *fiber.Ctx) error {
 
 }
 func RemoveItemFromCart(c *fiber.Ctx) {}
-func Checkout(c *fiber.Ctx)           {}
+func Checkout(c *fiber.Ctx) error {
+
+	payload := struct {
+		ID uuid.UUID `json:"id"`
+	}{}
+
+	// Would return error if the request body is not set correctly
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+			"message": "Incorrect ID",
+		})
+	}
+
+	// Check for discount
+	// if discount is applied then return discounted price
+
+	user, err := helpers.GetUserCart(payload.ID)
+	if err != nil {
+		return c.Status(500).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(&fiber.Map{
+		"success":     true,
+		"cart":        user.Cart,
+		"total_price": user.CartValue,
+	})
+}
+
+func DiscountCart(c *fiber.Ctx) {}

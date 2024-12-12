@@ -14,8 +14,9 @@ type Item struct {
 }
 
 type User struct {
-	UserID uuid.UUID `json:"id"`
-	Cart   []Item    `json:"cart"`
+	UserID    uuid.UUID `json:"id"`
+	Cart      []Item    `json:"cart"`
+	CartValue float32   `json:"total_cart_value"`
 }
 
 // TODO: Have to create the Order type

@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -108,6 +109,7 @@ func TraverseUsers(id uuid.UUID) ([]models.User, error) {
 	return users, nil
 }
 
+// TODO: Check for quantities present in the
 func AddItemToCart(userID uuid.UUID, item models.Item) ([]models.Item, error) {
 	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
 	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
@@ -130,27 +132,31 @@ func AddItemToCart(userID uuid.UUID, item models.Item) ([]models.Item, error) {
 		return nil, err
 	}
 
-	for _, user := range users {
+	for i, user := range users {
 		if user.UserID == userID {
-			user.Cart = append(user.Cart, item)
+			users[i].Cart = append(users[i].Cart, item)
+			users[i].CartValue += item.Price
 			updatedUsers, err := json.MarshalIndent(users, "", "  ")
 			if err != nil {
 				return nil, err
 			}
 
-			if err = os.Truncate(pathToUsersFile, 0); err != nil {
-				return nil, err
-			}
-
-			_, err = usersFile.WriteAt(updatedUsers, 0)
+			usersFile.Close()
+			usersFile, err = os.OpenFile(pathToUsersFile, os.O_WRONLY|os.O_TRUNC, 0755)
 			if err != nil {
 				return nil, err
 			}
-			return user.Cart, nil
+			defer usersFile.Close()
+
+			_, err = usersFile.Write(updatedUsers)
+			if err != nil {
+				return nil, err
+			}
+			return users[i].Cart, nil
 		}
 	}
 
-	return nil, err
+	return nil, fmt.Errorf("user with ID %s not found", userID)
 }
 
 func GetUserCart(userID uuid.UUID) (models.User, error) {
