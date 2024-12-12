@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/SamstyleGhost/uniblox-assignment/helpers"
+	"github.com/SamstyleGhost/uniblox-assignment/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -110,29 +111,52 @@ func GetUserCart(c *fiber.Ctx) error {
 		})
 	}
 
-	users, err := helpers.TraverseUsers(userID)
+	user, err := helpers.GetUserCart(userID)
+	if err != nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+			"message": "ID format invalid",
+		})
+	}
+
+	return c.Status(200).JSON(&fiber.Map{
+		"success": true,
+		"error":   user,
+	})
+}
+
+func AddItemToCart(c *fiber.Ctx) error {
+
+	payload := struct {
+		UserID uuid.UUID   `json:"user_id"`
+		Item   models.Item `json:"item"`
+	}{}
+
+	// Would return error if the request body is not set correctly
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+			"message": "Payload structure incorrect",
+		})
+	}
+
+	cart, err := helpers.AddItemToCart(payload.UserID, payload.Item)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"success": false,
 			"error":   err.Error(),
+			"message": "Payload structure incorrect",
 		})
 	}
 
-	for _, user := range users {
-		if user.UserID == userID {
-			return c.Status(200).JSON(&fiber.Map{
-				"success": true,
-				"item":    user,
-			})
-		}
-	}
-
-	// Would return error if user is not found
-	return c.Status(400).JSON(&fiber.Map{
-		"success": false,
-		"error":   "User not found",
+	return c.Status(201).JSON(&fiber.Map{
+		"success": true,
+		"cart":    cart,
+		"message": "Cart updated successfully",
 	})
+
 }
-func AddItemToCart(c *fiber.Ctx)      {}
 func RemoveItemFromCart(c *fiber.Ctx) {}
 func Checkout(c *fiber.Ctx)           {}

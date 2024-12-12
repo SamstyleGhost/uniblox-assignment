@@ -107,3 +107,65 @@ func TraverseUsers(id uuid.UUID) ([]models.User, error) {
 
 	return users, nil
 }
+
+func AddItemToCart(userID uuid.UUID, item models.Item) ([]models.Item, error) {
+	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
+	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		return nil, err
+	}
+
+	defer usersFile.Close()
+
+	byteValue, err := io.ReadAll(usersFile)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []models.User
+
+	var json = jsoniter.ConfigCompatibleWithStandardLibrary
+	err = json.Unmarshal(byteValue, &users)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, user := range users {
+		if user.UserID == userID {
+			user.Cart = append(user.Cart, item)
+			updatedUsers, err := json.MarshalIndent(users, "", "  ")
+			if err != nil {
+				return nil, err
+			}
+
+			if err = os.Truncate(pathToUsersFile, 0); err != nil {
+				return nil, err
+			}
+
+			_, err = usersFile.WriteAt(updatedUsers, 0)
+			if err != nil {
+				return nil, err
+			}
+			return user.Cart, nil
+		}
+	}
+
+	return nil, err
+}
+
+func GetUserCart(userID uuid.UUID) (models.User, error) {
+
+	users, err := TraverseUsers(userID)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	for _, user := range users {
+		if user.UserID == userID {
+			return user, nil
+		}
+	}
+
+	// Would return error if user is not found
+	return models.User{}, err
+}
