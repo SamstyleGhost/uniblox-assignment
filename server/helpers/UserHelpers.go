@@ -5,7 +5,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sync"
 
 	"github.com/SamstyleGhost/uniblox-assignment/models"
 	"github.com/google/uuid"
@@ -14,10 +13,7 @@ import (
 
 // A counter variable to count the number of orders
 // Another way was to count the len of the array in orders.json
-var (
-	counter int
-	mu      sync.Mutex
-)
+var counter = 0
 
 func AddUserToUsers(id uuid.UUID) error {
 
@@ -167,18 +163,6 @@ func GetUserCart(userID uuid.UUID) (models.User, error) {
 	return models.User{}, err
 }
 
-// This function calculates the discount to be given, if any
-func DiscountCart(originalPrice float32) (float32, float32) {
-
-	var discount float32
-	if incrementCounter()%3 == 0 {
-		discount = originalPrice * 0.2 // 20% discount
-	}
-
-	totalPrice := originalPrice - discount
-	return discount, totalPrice
-}
-
 func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32, discount float32) error {
 
 	pathToOrdersFile, _ := filepath.Abs("data/orders.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
@@ -202,6 +186,7 @@ func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32,
 	}
 
 	newOrder := new(models.Order)
+	newOrder.OrderID = counter
 	newOrder.UserID = userID
 	newOrder.Items = cartItems
 	newOrder.OrderValue = orderValue
@@ -222,6 +207,8 @@ func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32,
 	if err != nil {
 		return err
 	}
+
+	counter++
 
 	return nil
 }
@@ -277,10 +264,112 @@ func EmptyCart(userID uuid.UUID) error {
 	return fmt.Errorf("user with ID %s not found", userID)
 }
 
-func incrementCounter() int {
-	mu.Lock()
-	counter++
-	mu.Unlock()
+func GenerateCoupon(userID uuid.UUID) (uuid.UUID, error) {
+	if counter%3 == 0 {
+		coupon := uuid.New()
 
-	return counter
+		pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
+		couponsFile, err := os.OpenFile(pathToCouponsFile, os.O_RDWR|os.O_CREATE, 0755)
+		if err != nil {
+			return uuid.Nil, err
+		}
+
+		defer couponsFile.Close()
+
+		byteValue, err := io.ReadAll(couponsFile)
+		if err != nil {
+			return uuid.Nil, err
+		}
+
+		var coupons []models.Coupon
+		var json = jsoniter.ConfigCompatibleWithStandardLibrary
+
+		err = json.Unmarshal(byteValue, &coupons)
+		if err != nil {
+			return uuid.Nil, err
+		}
+
+		newCoupon := new(models.Coupon)
+		newCoupon.UserID = userID
+		newCoupon.CouponCode = coupon
+
+		coupons = append(coupons, *newCoupon)
+		updatedCoupons, err := json.MarshalIndent(coupons, "", "  ")
+		if err != nil {
+			return uuid.Nil, err
+		}
+
+		couponsFile.Close()
+		couponsFile, err = os.OpenFile(pathToCouponsFile, os.O_WRONLY|os.O_TRUNC, 0755)
+		if err != nil {
+			return uuid.Nil, err
+		}
+		defer couponsFile.Close()
+
+		_, err = couponsFile.Write(updatedCoupons)
+		if err != nil {
+			return uuid.Nil, err
+		}
+
+		return coupon, nil
+	}
+
+	return uuid.Nil, fmt.Errorf("no coupon for this order")
+}
+
+func ValidateCoupon(coupon uuid.UUID, userID uuid.UUID) (bool, error) {
+
+	pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
+	couponsFile, err := os.OpenFile(pathToCouponsFile, os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		return false, err
+	}
+
+	defer couponsFile.Close()
+
+	byteValue, err := io.ReadAll(couponsFile)
+	if err != nil {
+		return false, err
+	}
+
+	var coupons []models.Coupon
+	var json = jsoniter.ConfigCompatibleWithStandardLibrary
+
+	err = json.Unmarshal(byteValue, &coupons)
+	if err != nil {
+		return false, err
+	}
+
+	index := -1
+	for i, cpn := range coupons {
+		if cpn.CouponCode == coupon && cpn.UserID == userID {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		return false, fmt.Errorf("coupon code %s invalid", coupon)
+	}
+
+	coupons = append(coupons[:index], coupons[index+1:]...)
+
+	updatedCoupons, err := json.MarshalIndent(coupons, "", "  ")
+	if err != nil {
+		return false, err
+	}
+
+	couponsFile.Close()
+	couponsFile, err = os.OpenFile(pathToCouponsFile, os.O_WRONLY|os.O_TRUNC, 0755)
+	if err != nil {
+		return false, err
+	}
+	defer couponsFile.Close()
+
+	_, err = couponsFile.Write(updatedCoupons)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
