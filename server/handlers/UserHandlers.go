@@ -207,3 +207,24 @@ func Checkout(c *fiber.Ctx) error {
 		"coupon":         newCoupon,
 	})
 }
+
+func CheckCoupons(c *fiber.Ctx) error {
+	payload := struct {
+		UserID uuid.UUID `json:"user_id"`
+	}{}
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	userCoupons, err := helpers.CheckCoupons(payload.UserID)
+	if err != nil {
+		return c.Status(500).JSON(&fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(userCoupons)
+}

@@ -373,3 +373,37 @@ func ValidateCoupon(coupon uuid.UUID, userID uuid.UUID) (bool, error) {
 
 	return true, nil
 }
+
+func CheckCoupons(userID uuid.UUID) ([]models.Coupon, error) {
+
+	pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
+	couponsFile, err := os.Open(pathToCouponsFile)
+	if err != nil {
+		return nil, err
+	}
+
+	defer couponsFile.Close()
+
+	byteValue, err := io.ReadAll(couponsFile)
+	if err != nil {
+		return nil, err
+	}
+
+	var coupons []models.Coupon
+	var json = jsoniter.ConfigCompatibleWithStandardLibrary
+
+	err = json.Unmarshal(byteValue, &coupons)
+	if err != nil {
+		return nil, err
+	}
+
+	userCoupons := []models.Coupon{}
+
+	for _, cpn := range coupons {
+		if cpn.UserID == userID {
+			userCoupons = append(userCoupons, cpn)
+		}
+	}
+
+	return userCoupons, nil
+}

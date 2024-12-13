@@ -20,4 +20,5 @@ func SetRoutes(app *fiber.App) {
 	userAPI.Post("/", handlers.AddUser)
 	userAPI.Post("/add-to-cart", handlers.AddItemToCart)
 	userAPI.Post("/checkout", handlers.Checkout)
+	userAPI.Post("/coupons", handlers.CheckCoupons)
 }

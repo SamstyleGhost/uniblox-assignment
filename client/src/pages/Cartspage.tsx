@@ -8,8 +8,8 @@ import { CartItem, LinkButton } from "../components";
 const Cartpage: React.FC = () => {
   const { customerID, customerCart, setCustomerCart } = useUserContext();
   const navigate : NavigateFunction = useNavigate()
-  
-  const [coupon, setCoupon] = useState<string>("");
+
+  const [totalValue, setTotalValue] = useState<number>(0);
 
   const getUserCart = useCallback( async () => {
 
@@ -28,13 +28,15 @@ const Cartpage: React.FC = () => {
       } else {
         cid = customerID
       }
-      const response : AxiosResponse<CartResponseType> = await axios.get(`http://localhost:5000/api/v1/user/${cid}`)
+      const response : AxiosResponse<CartResponseType> = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/${cid}`)
       console.log(response);
+      setTotalValue(response.data.user.total_cart_value)
       setCustomerCart(response.data.user.cart)
     } catch (error) {
       console.error(error);
     }
   }, [customerID, navigate, setCustomerCart])
+
 
   useEffect(() => {
     getUserCart()
@@ -48,22 +50,14 @@ const Cartpage: React.FC = () => {
             <CartItem key={index} item={item} />
           ))}
       </div>
-      <div className="w-full flex justify-center py-4 gap-2 items-center">
-        <p>Have a coupon code? Enter it here:</p>
-        <input
-          type="text"
-          value={coupon}
-          onChange={(e) => setCoupon(e.target.value)}
-          className="border border-secondary rounded-lg p-2"
-        />
+      <div className="w-full flex py-4">
+        <h6 className="md:text-2xl text-lg font-medium">
+          Total cart value is:{" "}
+          <span className="font-bold md:text-3xl text-xl">${totalValue}</span>
+        </h6>
       </div>
       <div className="w-full flex justify-center py-4">
-        <LinkButton
-          to="/checkout"
-          additional=""
-          content="Checkout"
-          state={{ coupon: coupon }}
-        />
+        <LinkButton to="/checkout" additional="" content="Checkout" />
       </div>
     </main>
   );

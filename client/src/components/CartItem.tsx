@@ -18,7 +18,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
   const getItemInfo = useCallback( async () => {
     try {
-      const response : AxiosResponse<ItemTypeRes> = await axios.post("http://localhost:5000/api/v1/items", {
+      const response : AxiosResponse<ItemTypeRes> = await axios.post(`${import.meta.env.VITE_BASE_URL}/items`, {
         item_id: item.item_id
       }) 
       

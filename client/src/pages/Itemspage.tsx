@@ -14,7 +14,7 @@ const Itemspage : React.FC = () => {
 
   const getAllItems = async () => {
     try {
-      const response : AxiosResponse<ItemsResponseType> = await axios.get("http://localhost:5000/api/v1/items")
+      const response : AxiosResponse<ItemsResponseType> = await axios.get(`${import.meta.env.VITE_BASE_URL}/items`)
       setItems(response.data.items)
     } catch (error) {
       console.error(error);

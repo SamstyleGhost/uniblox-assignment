@@ -20,7 +20,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     if(!cusID) {
       const cid : UUIDTypes = uuidV4();
       localStorage.setItem("assignment_customer_id", cid);
-        axios.post("http://localhost:5000/api/v1/user", {
+        axios.post(`${import.meta.env.VITE_BASE_URL}/user`, {
           user_id: cid
         }).then(res => {
           console.log(res);
@@ -35,7 +35,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
 
   useEffect(() => {
     if(customerID) {
-      axios.get(`http://localhost:5000/api/v1/user/${customerID}`)
+      axios.get(`${import.meta.env.VITE_BASE_URL}/user/${customerID}`)
         .then((res: AxiosResponse<CartResponseType>) => {
           setCustomerCart(res.data.user.cart);
         })

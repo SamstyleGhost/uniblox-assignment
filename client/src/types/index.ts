@@ -30,6 +30,11 @@ interface CartResponseType {
   user: UserType;
 }
 
+interface CouponType {
+  user_id: UUIDTypes;
+  coupon_code: UUIDTypes;
+}
+
 interface UserContextType {
   customerID: string | null;
   customerCart: CartItemType[];
@@ -42,3 +47,4 @@ export { type CartItemType }
 export { type UserContextType }
 export { type UserType }
 export { type CartResponseType }
+export { type CouponType }
