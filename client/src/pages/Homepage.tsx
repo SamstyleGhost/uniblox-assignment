@@ -1,15 +1,23 @@
 import { motion} from "motion/react";
 
-import { sofa } from "../assets/images";
 import { LinkButton } from "../components";
+import Sofa from "../models/Sofa";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 const Homepage: React.FC = () => {
 
   return (
     <main className="w-full h-full overflow-hidden">
-      <section className="w-full py-16 md:py-40 flex md:flex-row md:items-center md:gap-16 flex-col justify-between">
+      <section className="w-full py-16 md:py-28 flex md:flex-row md:items-center md:gap-16 flex-col justify-between">
         <div className="w-full md:w-1/2 h-full relative">
-          <img src={sofa} className="object-contain w-full h-full" />
+          {/* <img src={sofa} className="object-contain w-full h-full" /> */}
+          <Canvas>
+            <OrbitControls />
+            <directionalLight intensity={2}/>
+            <spotLight />
+            <Sofa scale={[1.8,1.8,1.8]} position={[0,-2,0]} />
+          </Canvas>
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           <div className="flex flex-col">

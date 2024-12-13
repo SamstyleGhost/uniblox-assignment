@@ -5,3 +5,13 @@
 .homepage_image {
   @apply object-cover w-full h-full absolute blur-md hover:scale-125 duration-500
 }
+
+Canvas {
+  height: 600px;
+}
+
+@media (width < 768px) {
+  Canvas {
+    height: 300px;
+  }
+}
