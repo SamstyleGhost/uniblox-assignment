@@ -5,6 +5,7 @@ import { CartItemType } from "../types"
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Table from "../models/Table";
+import { Item } from "../components";
 
 interface ItemsResponseType {
   items : CartItemType[];
@@ -29,18 +30,15 @@ const Itemspage : React.FC = () => {
 
   return (
     <main className="w-full max-md:px-2 relative">
-      {
-        /*
-
       {items && items.map((item, index) => (
-        <div key={index}>{item.name}</div>
+        <Item key={index} item={item} />
       ))}
-        */
-      }
-      <Canvas className="bg-gray-400">
+      {/* <Canvas className="bg-gray-400">
+        <directionalLight />
+        <spotLight />
         <OrbitControls />
         <Table position={[0, 0, 0]} scale={[4,4,4]} />
-      </Canvas>
+      </Canvas> */}
     </main>
   )
 }

@@ -1,20 +1,20 @@
 [
 	{
 		"item_id": 1,
-		"name": "Office Char",
+		"name": "Office Chair",
 		"vendor": "OfficeCo Supplies",
 		"description": "A comfortable and ergonomic office chair with adjustable height and wheels for mobility, ideal for long hours at the desk.",
-		"images": ["office-chair.jpg"],
+		"images": ["chair1", "chair2"],
 		"three_link": "https://fab.com/s/2cf83e2ac5e8",
 		"price": 49.99,
 		"quantity": 25
 	},
 	{
 		"item_id": 2,
-		"name": "Coffee Table",
+		"name": "Sofa",
 		"vendor": "Furniture World",
-		"description": "A stylish and sturdy coffee table, perfect for living rooms or office spaces, made from high-quality materials.",
-		"images": ["coffee-table.jpg"],
+		"description": "A stylish and comfy sofa, perfect for living rooms or office spaces, made from high-quality materials.",
+		"images": ["sofa1", "sofa2", "sofa3", "sofa4"],
 		"three_link": "https://fab.com/s/ef0279c0aa7c",
 		"price": 89.99,
 		"quantity": 10
@@ -24,7 +24,7 @@
 		"name": "Clock",
 		"vendor": "Timekeepers Ltd.",
 		"description": "A sleek and modern wall clock with a silent mechanism, suitable for homes or offices.",
-		"images": ["clock.jpg"],
+		"images": ["clock1", "clock2", "clock3"],
 		"three_link": "https://fab.com/s/7534f812496b",
 		"price": 19.99,
 		"quantity": 100
@@ -34,7 +34,7 @@
 		"name": "Round Table",
 		"vendor": "RoundWorks Inc.",
 		"description": "A durable and elegant round table, perfect for dining areas or meeting rooms, crafted with care.",
-		"images": ["round-table.jpg"],
+		"images": ["table1", "table2", "table3"],
 		"three_link": "https://fab.com/s/5a849b5ef208",
 		"price": 149.99,
 		"quantity": 15
@@ -44,7 +44,7 @@
 		"name": "Knights",
 		"vendor": "Heritage Figurines",
 		"description": "An intricately designed set of knight figurines, ideal for collectors or as decorative pieces.",
-		"images": ["knights.jpg"],
+		"images": ["knight1", "knight2", "knight3", "knight4", "knight5"],
 		"three_link": "https://fab.com/s/ba07ab0e327c",
 		"price": 99.99,
 		"quantity": 8

@@ -5,7 +5,7 @@ interface UserContextProviderProps {
 }
 
 interface CartItemType {
-  id: number;
+  item_id: number;
   name: string;
   vendor: string;
   description: string;
