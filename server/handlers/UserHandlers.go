@@ -98,7 +98,6 @@ func AddItemToCart(c *fiber.Ctx) error {
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
 			"error":   err.Error(),
 			"message": "Payload structure incorrect",
 		})
@@ -107,8 +106,7 @@ func AddItemToCart(c *fiber.Ctx) error {
 	// If the quantity is 0, then do not add to cart
 	if payload.Quantity == 0 {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   "No quantity selected",
+			"error": "No quantity selected",
 		})
 	}
 

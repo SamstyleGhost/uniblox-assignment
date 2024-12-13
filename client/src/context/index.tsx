@@ -49,7 +49,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     <UserContext.Provider
       value={{
         customerID,
-        customerCart
+        customerCart,
+        setCustomerCart
       }}
     >
       {children}

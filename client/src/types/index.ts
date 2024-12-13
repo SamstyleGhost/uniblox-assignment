@@ -25,6 +25,7 @@ interface CartResponseType {
 interface UserContextType {
   customerID: string | null;
   customerCart: CartItemType[];
+  setCustomerCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
 }
 
 export { type UserContextProviderProps }
