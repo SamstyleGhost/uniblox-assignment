@@ -18,15 +18,11 @@ func GetAllItems(c *fiber.Ctx) error {
 	items, err := helpers.TraverseItems()
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
-		"data": fiber.Map{
-			"items": items,
-		},
+		"items": items,
 	})
 }
 
@@ -50,8 +46,7 @@ func GetSelectItem(c *fiber.Ctx) error {
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
@@ -59,15 +54,11 @@ func GetSelectItem(c *fiber.Ctx) error {
 	if err != nil {
 		// Would return error if item is not found
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
-		"data": fiber.Map{
-			"item": item,
-		},
+		"item": item,
 	})
 }

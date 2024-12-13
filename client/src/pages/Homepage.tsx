@@ -12,11 +12,12 @@ const Homepage: React.FC = () => {
           <img src={sofa} className="object-contain w-full h-full" />
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-8">
-          <div className="homepage_title flex flex-col">
+          <div className="flex flex-col">
             {["One", "Stop", "Shop"].map((val, index) => (
               <motion.span key={index}
                 animate={{ x: [1000, 0] }}
                 transition={{ duration: 1, easing: "easeIn", delay: (index / 2) }}
+                className="font-bold text-7xl md:text-[112px] font-agu md:text-left text-center"
               >{val}</motion.span>
             ))}
           </div>

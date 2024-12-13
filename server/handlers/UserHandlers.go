@@ -21,20 +21,17 @@ func AddUser(c *fiber.Ctx) error {
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	if err := helpers.AddUserToUsers(payload.ID); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
 		"message": "User added succesfully",
 	})
 }
@@ -56,24 +53,19 @@ func GetUserCart(c *fiber.Ctx) error {
 	userID, err := uuid.Parse(userParam)
 	if err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	user, err := helpers.GetUserCart(userID)
 	if err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
-		"data": fiber.Map{
-			"user": user,
-		},
+		"user": user,
 	})
 }
 
@@ -117,16 +109,12 @@ func AddItemToCart(c *fiber.Ctx) error {
 	cart, err := helpers.AddItemToCart(payload.UserID, payload.ItemID, payload.Quantity)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	return c.Status(201).JSON(&fiber.Map{
-		"success": true,
-		"data": fiber.Map{
-			"cart": cart,
-		},
+		"cart": cart,
 	})
 }
 
@@ -155,24 +143,21 @@ func Checkout(c *fiber.Ctx) error {
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	user, err := helpers.GetUserCart(payload.ID)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	// Checks the condition when cart is empty. No checkout possible then
 	if len(user.Cart) == 0 {
 		return c.Status(400).JSON(&fiber.Map{
-			"success": false,
-			"error":   "cart empty",
+			"error": "cart empty",
 		})
 	}
 
@@ -197,29 +182,24 @@ func Checkout(c *fiber.Ctx) error {
 	// Add to orders.json
 	if err := helpers.AddOrder(payload.ID, user.Cart, totalPrice, discountPrice); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	// Empty cart & revise cart_value to 0
 	if err := helpers.EmptyCart(payload.ID); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	// TODO: Subtract the quantity of items bought from the overall stock
 
 	return c.Status(200).JSON(&fiber.Map{
-		"success": true,
-		"data": fiber.Map{
-			"cart":           user.Cart,
-			"original_price": user.CartValue,
-			"discount":       discountPrice,
-			"total_price":    totalPrice,
-			"coupon":         newCoupon,
-		},
+		"cart":           user.Cart,
+		"original_price": user.CartValue,
+		"discount":       discountPrice,
+		"total_price":    totalPrice,
+		"coupon":         newCoupon,
 	})
 }

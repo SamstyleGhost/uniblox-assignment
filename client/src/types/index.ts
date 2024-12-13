@@ -12,11 +12,10 @@ interface CartItemType {
   images: string[];
   three_link: string;
   price: number;
-  quantitu: number;
+  quantity: number;
 }
 
 interface CartResponseType {
-  success: boolean;
   user: {
     id: UUIDTypes;
     cart: CartItemType[];

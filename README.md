@@ -43,5 +43,8 @@ API endpoints are available for:
 - Photo by <a href="https://unsplash.com/@silvana_carlos?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Silvana Carlos</a> on <a href="https://unsplash.com/photos/green-blue-and-white-balloon-5Qajp1_80BA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 - <a href="https://www.freepik.com/free-psd/view-sofa-interior-design-decor_320731945.htm#fromView=keyword&page=1&position=8&uuid=6ea8ce7f-abe5-4f0b-a81a-126e188d903a">Image by freepik</a>
 
+## 3d model credits:
+- Sofa : https://skfb.ly/p8NZs
+
 ## TODO:
 - Need to go over some of the status codes, mostly the error ones that are returned from helper functions
