@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
 import axios, { AxiosResponse } from "axios"
 
-import { CartItemType } from "../types"
+import { ItemType } from "../types"
 import { Item } from "../components";
 
 interface ItemsResponseType {
-  items : CartItemType[];
+  items : ItemType[];
 }
 
 const Itemspage : React.FC = () => {
 
-  const [items, setItems] = useState<CartItemType[] | null>([]);
+  const [items, setItems] = useState<ItemType[] | null>([]);
 
   const getAllItems = async () => {
     try {

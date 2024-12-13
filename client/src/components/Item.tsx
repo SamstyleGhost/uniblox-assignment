@@ -1,4 +1,4 @@
-import { CartItemType } from "../types"
+import { ItemType } from "../types"
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Chair from "../models/Chair";
@@ -11,7 +11,7 @@ import axios from "axios";
 import { useUserContext } from "../context";
 
 interface ItemProps {
-  item: CartItemType;
+  item: ItemType;
 }
 
 interface SceneProps {

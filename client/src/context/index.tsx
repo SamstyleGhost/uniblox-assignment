@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { UUIDTypes, v4 as uuidV4} from "uuid";
 import axios, { AxiosResponse } from "axios";
-import { UserContextProviderProps, UserContextType, CartItemType, CartResponseType } from "../types";
+import { UserContextProviderProps, UserContextType, CartResponseType, CartItemType } from "../types";
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
