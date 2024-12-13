@@ -2,8 +2,22 @@ import { motion} from "motion/react";
 
 import { LinkButton } from "../components";
 import Sofa from "../models/Sofa";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import * as THREE from 'three'
+import { useRef } from "react";
+
+const RotatingSofa = () => {
+  const sofaRef = useRef<THREE.Mesh>(null);
+
+  useFrame(() => {
+    if (sofaRef.current) {
+      sofaRef.current.rotation.y += 0.01;
+    }
+  });
+
+  return <Sofa ref={sofaRef} scale={[1.8, 1.8, 1.8]} position={[0, -3, 0]} />;
+}
 
 const Homepage: React.FC = () => {
 
@@ -16,7 +30,7 @@ const Homepage: React.FC = () => {
             <OrbitControls />
             <directionalLight intensity={2}/>
             <spotLight />
-            <Sofa scale={[1.8,1.8,1.8]} position={[0,-2,0]} />
+            <RotatingSofa />
           </Canvas>
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-8">

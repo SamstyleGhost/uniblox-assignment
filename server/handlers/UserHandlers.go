@@ -25,6 +25,12 @@ func AddUser(c *fiber.Ctx) error {
 		})
 	}
 
+	if payload.ID == uuid.Nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"error": "Nil uuid received",
+		})
+	}
+
 	if err := helpers.AddUserToUsers(payload.ID); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),

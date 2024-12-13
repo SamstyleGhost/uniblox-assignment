@@ -21,7 +21,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
       const cid : UUIDTypes = uuidV4();
       localStorage.setItem("assignment_customer_id", cid);
         axios.post("http://localhost:5000/api/v1/user", {
-          id: cid
+          user_id: cid
         }).then(res => {
           console.log(res);
           setCustomerID(cid);

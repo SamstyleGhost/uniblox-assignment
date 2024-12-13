@@ -1,5 +1,4 @@
 import { CartItemType } from "../types"
-import { actualImages } from "../assets/images";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Chair from "../models/Chair";
@@ -54,7 +53,6 @@ const Item : React.FC<ItemProps> = ({ item }) => {
         </button>
       </div>
       <div className="md:w-1/2 w-full">
-        {/* <img src={actualImages[item.item_id][0]} className="object-contain w-fit p-4" /> */}
         <Canvas>
           <OrbitControls />
           <directionalLight />

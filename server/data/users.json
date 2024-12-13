@@ -25,7 +25,17 @@
     "total_cart_value": 0
   },
   {
-    "user_id": "00000000-0000-0000-0000-000000000000",
+    "user_id": "e2846d5a-7b78-425c-84fb-9d241b8183ce",
+    "cart": [],
+    "total_cart_value": 0
+  },
+  {
+    "user_id": "922d7716-58ce-4bbc-9b70-25299b16027f",
+    "cart": [],
+    "total_cart_value": 0
+  },
+  {
+    "user_id": "847f38fa-bf27-43b1-a871-93c1810098c8",
     "cart": [],
     "total_cart_value": 0
   }

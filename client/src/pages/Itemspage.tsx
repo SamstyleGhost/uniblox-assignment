@@ -2,9 +2,6 @@ import { useEffect, useState } from "react"
 import axios, { AxiosResponse } from "axios"
 
 import { CartItemType } from "../types"
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import Table from "../models/Table";
 import { Item } from "../components";
 
 interface ItemsResponseType {
@@ -33,12 +30,6 @@ const Itemspage : React.FC = () => {
       {items && items.map((item, index) => (
         <Item key={index} item={item} />
       ))}
-      {/* <Canvas className="bg-gray-400">
-        <directionalLight />
-        <spotLight />
-        <OrbitControls />
-        <Table position={[0, 0, 0]} scale={[4,4,4]} />
-      </Canvas> */}
     </main>
   )
 }

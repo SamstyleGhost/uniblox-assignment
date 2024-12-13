@@ -1,13 +1,12 @@
-import { useRef } from "react";
+import { forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import sofaScene from "./../assets/3d/sofa.glb";
 
-const Sofa = (props) => {
-  const modelRef = useRef();
+const Sofa = forwardRef((props, ref) => {
 
   const { nodes, materials } = useGLTF(sofaScene);
   return (
-    <group ref={modelRef} {...props}>
+    <group ref={ref} {...props}>
       <group position={[0, 1.428, 0.646]} scale={1.005}>
         <mesh
           castShadow
@@ -114,6 +113,6 @@ const Sofa = (props) => {
       />
     </group>
   );
-};
+});
 
 export default Sofa;
