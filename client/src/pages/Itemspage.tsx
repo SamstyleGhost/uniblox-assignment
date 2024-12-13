@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react"
 import axios, { AxiosResponse } from "axios"
 
-import { CartItemType } from "../types"
+import { ItemType } from "../types"
 import { Item } from "../components";
 
 interface ItemsResponseType {
-  items : CartItemType[];
+  items : ItemType[];
 }
 
 const Itemspage : React.FC = () => {
 
-  const [items, setItems] = useState<CartItemType[] | null>([]);
+  const [items, setItems] = useState<ItemType[] | null>([]);
 
   const getAllItems = async () => {
     try {
-      const response : AxiosResponse<ItemsResponseType> = await axios.get("http://localhost:5000/api/v1/items")
+      const response : AxiosResponse<ItemsResponseType> = await axios.get(`${import.meta.env.VITE_BASE_URL}/items`)
       setItems(response.data.items)
     } catch (error) {
       console.error(error);

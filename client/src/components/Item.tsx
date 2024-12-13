@@ -1,4 +1,4 @@
-import { CartItemType } from "../types"
+import { ItemType } from "../types"
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Chair from "../models/Chair";
@@ -11,7 +11,7 @@ import axios from "axios";
 import { useUserContext } from "../context";
 
 interface ItemProps {
-  item: CartItemType;
+  item: ItemType;
 }
 
 interface SceneProps {
@@ -51,7 +51,7 @@ const Item : React.FC<ItemProps> = ({ item }) => {
 
     
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/user/add-to-cart", {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/add-to-cart`, {
         user_id: customerID,
         item_id: item.item_id,
         quantity: quantity,

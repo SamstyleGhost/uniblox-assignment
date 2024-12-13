@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 interface Props {
   to: string;
   additional: string;
-  content: string
+  content: string;
 }
 
 const LinkButton : React.FC<Props> = ({ to, additional, content }) => {

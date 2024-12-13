@@ -1,10 +1,10 @@
-import { UUIDTypes} from "uuid";
+import { UUIDTypes } from "uuid";
 
 interface UserContextProviderProps {
   children: React.ReactNode;
 }
 
-interface CartItemType {
+interface ItemType {
   item_id: number;
   name: string;
   vendor: string;
@@ -15,11 +15,24 @@ interface CartItemType {
   quantity: number;
 }
 
+interface CartItemType {
+  item_id: number;
+  quantity: number;
+}
+
+interface UserType {
+  user_id: UUIDTypes;
+  cart: CartItemType[];
+  total_cart_value: number;
+}
+
 interface CartResponseType {
-  user: {
-    id: UUIDTypes;
-    cart: CartItemType[];
-  }
+  user: UserType;
+}
+
+interface CouponType {
+  user_id: UUIDTypes;
+  coupon_code: UUIDTypes;
 }
 
 interface UserContextType {
@@ -29,6 +42,9 @@ interface UserContextType {
 }
 
 export { type UserContextProviderProps }
+export { type ItemType }
 export { type CartItemType }
-export { type CartResponseType }
 export { type UserContextType }
+export { type UserType }
+export { type CartResponseType }
+export { type CouponType }

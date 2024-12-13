@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { Homepage, Itemspage } from "./pages";
+import { Cartpage, Checkoutpage, Homepage, Itemspage } from "./pages";
 import { Navbar } from "./components";
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/items" element={<Itemspage />} />
+          <Route path="/cart" element={<Cartpage />} />
+          <Route path="/checkout" element={<Checkoutpage />} />
         </Routes>
       </div>
     </div>
