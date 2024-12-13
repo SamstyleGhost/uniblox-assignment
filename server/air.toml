@@ -4,6 +4,6 @@ tmp_dir = "tmp"
 [build]
   bin = "main"
   cmd = "go build -o {{.Output}} {{.Input}}"
-  exclude = ["tmp/"]
+  exclude = ["tmp/", "data/"]
   include = ["**/*.go"]
-  ignore = ["tmp/*"]
+  ignore = ["tmp/*", "data/*"]

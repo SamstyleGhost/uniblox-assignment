@@ -50,5 +50,5 @@ func FindSelectedItem(itemID int) (models.Item, error) {
 		}
 	}
 
-	return models.Item{}, fmt.Errorf("item with %d itemID not found", itemID)
+	return models.Item{}, fmt.Errorf("item with itemID %d not found", itemID)
 }

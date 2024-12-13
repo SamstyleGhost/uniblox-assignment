@@ -5,9 +5,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// Response: List of all items present in the database.
-// Havent added pagination
-// ! Right now, I am sending the entire item data in this endpoint, once done, I'll see if I can reduce the data being sent now or adjust the later endpoint in such a way that it only takes in the additional info
+/*
+GET
+Response:
+
+	items: []models.Item - List of all items in the database
+
+* Havent added any pagination or other optimizations
+*/
 func GetAllItems(c *fiber.Ctx) error {
 
 	items, err := helpers.TraverseItems()
@@ -19,26 +24,27 @@ func GetAllItems(c *fiber.Ctx) error {
 	}
 	return c.Status(200).JSON(&fiber.Map{
 		"success": true,
-		"items":   items,
+		"data": fiber.Map{
+			"items": items,
+		},
 	})
 }
 
-// Request: id - ID of the item which is to be shown
-// Response: JSON of the item that has been requested
+/*
+POST
+Request:
+
+	item_id : int - ID of requested item
+
+Response:
+
+	item : model.Item - Requested item
+*/
 func GetSelectItem(c *fiber.Ctx) error {
 
-	items, err := helpers.TraverseItems()
-	// Would return any error occured while traversing the items.json file
-	if err != nil {
-		return c.Status(500).JSON(&fiber.Map{
-			"success": false,
-			"error":   err.Error(),
-		})
-	}
-
-	// Get the 'id' field from the body of the request
+	// Get the 'item_id' field from the body of the request
 	payload := struct {
-		ID int `json:"id"`
+		ID int `json:"item_id"`
 	}{}
 
 	// Would return error if the request body is not set correctly
@@ -46,22 +52,22 @@ func GetSelectItem(c *fiber.Ctx) error {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,
 			"error":   err.Error(),
-			"message": "Incorrect ID",
 		})
 	}
 
-	for _, item := range items {
-		if item.ItemID == payload.ID {
-			return c.Status(200).JSON(&fiber.Map{
-				"success": true,
-				"item":    item,
-			})
-		}
+	item, err := helpers.FindSelectedItem(payload.ID)
+	if err != nil {
+		// Would return error if item is not found
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+		})
 	}
 
-	// Would return error if item is not found
-	return c.Status(400).JSON(&fiber.Map{
-		"success": false,
-		"error":   "Item not found",
+	return c.Status(200).JSON(&fiber.Map{
+		"success": true,
+		"data": fiber.Map{
+			"item": item,
+		},
 	})
 }

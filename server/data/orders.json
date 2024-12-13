@@ -1,13 +1,142 @@
 [
   {
+    "order_id": 0,
     "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
     "items": [
       {
-        "id": 2,
+        "item_id": 4,
+        "quantity": 3
+      },
+      {
+        "item_id": 5,
+        "quantity": 1
+      }
+    ],
+    "order_value": 549.96,
+    "discount": 0
+  },
+  {
+    "order_id": 1,
+    "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
+    "items": [
+      {
+        "item_id": 1,
+        "quantity": 5
+      },
+      {
+        "item_id": 3,
+        "quantity": 3
+      }
+    ],
+    "order_value": 309.92,
+    "discount": 0
+  },
+  {
+    "order_id": 2,
+    "user_id": "39490ad6-7cc2-42f6-8887-3f29749dbb42",
+    "items": [
+      {
+        "item_id": 3,
+        "quantity": 4
+      },
+      {
+        "item_id": 2,
+        "quantity": 1
+      },
+      {
+        "item_id": 4,
         "quantity": 5
       }
     ],
-    "order_value": 54.949997,
+    "order_value": 919.9,
     "discount": 0
+  },
+  {
+    "order_id": 0,
+    "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
+    "items": [
+      {
+        "item_id": 1,
+        "quantity": 4
+      },
+      {
+        "item_id": 2,
+        "quantity": 3
+      }
+    ],
+    "order_value": 469.93,
+    "discount": 0
+  },
+  {
+    "order_id": 1,
+    "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
+    "items": [
+      {
+        "item_id": 4,
+        "quantity": 4
+      },
+      {
+        "item_id": 2,
+        "quantity": 3
+      }
+    ],
+    "order_value": 782.9371,
+    "discount": 86.993004
+  },
+  {
+    "order_id": 0,
+    "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
+    "items": [
+      {
+        "item_id": 5,
+        "quantity": 6
+      }
+    ],
+    "order_value": 599.94,
+    "discount": 0
+  },
+  {
+    "order_id": 1,
+    "user_id": "39490ad6-7cc2-42f6-8887-3f29749dbb42",
+    "items": [
+      {
+        "item_id": 1,
+        "quantity": 3
+      },
+      {
+        "item_id": 4,
+        "quantity": 6
+      }
+    ],
+    "order_value": 1049.91,
+    "discount": 0
+  },
+  {
+    "order_id": 2,
+    "user_id": "82aa07b3-e962-4246-a162-f278940b4720",
+    "items": [
+      {
+        "item_id": 2,
+        "quantity": 1
+      },
+      {
+        "item_id": 4,
+        "quantity": 4
+      }
+    ],
+    "order_value": 689.95,
+    "discount": 0
+  },
+  {
+    "order_id": 3,
+    "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
+    "items": [
+      {
+        "item_id": 2,
+        "quantity": 6
+      }
+    ],
+    "order_value": 485.946,
+    "discount": 53.994
   }
 ]

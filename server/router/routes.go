@@ -6,7 +6,7 @@ import (
 )
 
 func SetRoutes(app *fiber.App) {
-	api := app.Group("/api").Group("v1")
+	api := app.Group("/api").Group("/v1")
 
 	// Contains apis related to items retrieval
 	itemAPI := api.Group("/items")
@@ -14,9 +14,10 @@ func SetRoutes(app *fiber.App) {
 	itemAPI.Post("/", handlers.GetSelectItem)
 
 	// Contains apis related to user interactions
+	// So the endpoint would become '/user/add-to-cart'
 	userAPI := api.Group("/user")
+	userAPI.Get("/:id", handlers.GetUserCart)
 	userAPI.Post("/", handlers.AddUser)
 	userAPI.Post("/add-to-cart", handlers.AddItemToCart)
-	userAPI.Get("/:id", handlers.GetUserCart)
 	userAPI.Post("/checkout", handlers.Checkout)
 }
