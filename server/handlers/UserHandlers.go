@@ -46,7 +46,7 @@ func AddUser(c *fiber.Ctx) error {
 GET
 Parameters:
 
-	user-id: uuid
+	id: uuid
 
 Response:
 
@@ -208,6 +208,16 @@ func Checkout(c *fiber.Ctx) error {
 	})
 }
 
+/*
+POST
+Request:
+
+	user_id: uuid
+
+Response:
+
+	userCouponse: []models.Coupon{} - The coupons belonging to the user
+*/
 func CheckCoupons(c *fiber.Ctx) error {
 	payload := struct {
 		UserID uuid.UUID `json:"user_id"`

@@ -1,13 +1,8 @@
 [
   {
     "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
-    "cart": [
-      {
-        "item_id": 5,
-        "quantity": 6
-      }
-    ],
-    "total_cart_value": 599.94
+    "cart": [],
+    "total_cart_value": 0
   },
   {
     "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
@@ -15,9 +10,13 @@
       {
         "item_id": 2,
         "quantity": 6
+      },
+      {
+        "item_id": 2,
+        "quantity": 6
       }
     ],
-    "total_cart_value": 539.94
+    "total_cart_value": 1079.88
   },
   {
     "user_id": "39490ad6-7cc2-42f6-8887-3f29749dbb42",

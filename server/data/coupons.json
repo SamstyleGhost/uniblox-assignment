@@ -1,9 +1,5 @@
 [
   {
-    "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
-    "coupon_code": "1972fcab-3b1c-4cae-b3db-31704b931973"
-  },
-  {
     "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc",
     "coupon_code": "24b4fa47-72a8-440a-b111-2906dee22fdc"
   },
@@ -14,5 +10,9 @@
   {
     "user_id": "847f38fa-bf27-43b1-a871-93c1810098c8",
     "coupon_code": "7259d3fc-5e7f-4e23-8aae-1c5b81e03663"
+  },
+  {
+    "user_id": "8d27c3f7-bc80-4994-bab7-e27db5f102c5",
+    "coupon_code": "2e181a3b-a9c7-4994-9809-f23279e1005c"
   }
 ]
