@@ -6,7 +6,12 @@
   @apply object-cover w-full h-full absolute blur-md hover:scale-125 duration-500
 }
 
+Canvas {
+  height: 600px;
+}
 
-.homepage_title > span {
-  @apply font-bold text-7xl md:text-[112px] font-agu md:text-left text-center
+@media (width < 768px) {
+  Canvas {
+    height: 300px;
+  }
 }

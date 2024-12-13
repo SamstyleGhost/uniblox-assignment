@@ -2,10 +2,11 @@
 import { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import modelScene from './../assets/3d/table.glb'
+import * as THREE from 'three'
 
 const Table = (props) => {
 
-  const tableRef = useRef()
+  const tableRef = useRef<THREE.Mesh>()
   const { nodes, materials } = useGLTF(modelScene)
 
   return (

@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { Homepage } from "./pages";
+import { Homepage, Itemspage } from "./pages";
 import { Navbar } from "./components";
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
       <div className="max-w-page w-full">
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/items" element={<Itemspage />} />
         </Routes>
       </div>
     </div>
