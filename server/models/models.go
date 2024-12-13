@@ -25,8 +25,6 @@ type User struct {
 }
 
 // It should need a timestamp for when
-// Right now, the User and Order structs look the same, but on addition of timestamps, orderId, etc. fields, they would be different
-// Also, Order.OrderValue would be different from User.CartValue due to possible discounts
 type Order struct {
 	OrderID    int        `json:"order_id"`
 	UserID     uuid.UUID  `json:"user_id"`

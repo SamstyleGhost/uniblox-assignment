@@ -58,7 +58,6 @@ func GetUserCart(c *fiber.Ctx) error {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,
 			"error":   err.Error(),
-			"message": "ID format invalid",
 		})
 	}
 
@@ -107,6 +106,14 @@ func AddItemToCart(c *fiber.Ctx) error {
 		})
 	}
 
+	// If the quantity is 0, then do not add to cart
+	if payload.Quantity == 0 {
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   "No quantity selected",
+		})
+	}
+
 	cart, err := helpers.AddItemToCart(payload.UserID, payload.ItemID, payload.Quantity)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
@@ -127,7 +134,8 @@ func AddItemToCart(c *fiber.Ctx) error {
 POST
 Request:
 
-	user_id: uuid
+	user_id: uuid - ID of the user
+	coupon_code: uuid - Coupon code for discount (Optional - defaults to uuid.Nil)
 
 Response:
 
@@ -135,6 +143,7 @@ Response:
 	original_price: float32 - The original price of the cart without any discounts
 	discount: float32 - The amount of discount given
 	total_price: float32 - Original price - discount
+	coupon: uuid - New coupon code if available
 */
 func Checkout(c *fiber.Ctx) error {
 
@@ -159,6 +168,14 @@ func Checkout(c *fiber.Ctx) error {
 		})
 	}
 
+	// Checks the condition when cart is empty. No checkout possible then
+	if len(user.Cart) == 0 {
+		return c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"error":   "cart empty",
+		})
+	}
+
 	var discount bool
 
 	// Validate coupon if provided
@@ -166,14 +183,14 @@ func Checkout(c *fiber.Ctx) error {
 		discount, _ = helpers.ValidateCoupon(payload.Coupon, payload.ID)
 	}
 
-	// Give current coupon
+	// Give a new coupon every 3rd checkout
 	newCoupon, _ := helpers.GenerateCoupon(payload.ID)
 
 	var discountPrice float32
 	totalPrice := user.CartValue
 
 	if discount {
-		discountPrice = user.CartValue * 0.1 // 10% discount
+		discountPrice = user.CartValue * 0.1 // 10% discount if coupon is valid
 		totalPrice -= discountPrice
 	}
 
