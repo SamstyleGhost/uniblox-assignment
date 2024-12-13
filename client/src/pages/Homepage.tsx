@@ -7,6 +7,8 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three'
 import { useRef } from "react";
 
+// Would rotate infinitely
+// The scale & position properties below might show as unknown in Typescript, but is important for correct 3d model appearance
 const RotatingSofa = () => {
   const sofaRef = useRef<THREE.Mesh>(null);
 
@@ -25,7 +27,6 @@ const Homepage: React.FC = () => {
     <main className="w-full h-full overflow-hidden">
       <section className="w-full py-16 md:py-28 flex md:flex-row md:items-center md:gap-16 flex-col justify-between">
         <div className="w-full md:w-1/2 h-full relative">
-          {/* <img src={sofa} className="object-contain w-full h-full" /> */}
           <Canvas>
             <OrbitControls />
             <directionalLight intensity={2}/>

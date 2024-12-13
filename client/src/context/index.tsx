@@ -5,6 +5,7 @@ import { UserContextProviderProps, UserContextType, CartResponseType, CartItemTy
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+// An extra API endpoint to check whether user is in database would work better with this
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   
   const [customerID, setCustomerID] = useState<string | null>(null);
@@ -16,7 +17,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     setCustomerID(cusID);
     
     // The following if condition will be true when user visits the website first time (in real worlds, when they sign up instead of log in)
-    // TODO: Restructure the code below to implement additional type safety and overall flow
     if(!cusID) {
       const cid : UUIDTypes = uuidV4();
       localStorage.setItem("assignment_customer_id", cid);

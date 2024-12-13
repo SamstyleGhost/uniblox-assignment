@@ -12,6 +12,7 @@ interface CheckoutResponseType {
   coupon: UUIDTypes;
 }
 
+// ! The checkout API endpoint works, but the multiple rerenders occuring after error out due to cart being empty
 const Checkoutpage = () => {
 
   const { customerID } = useUserContext()
