@@ -41,6 +41,7 @@ API endpoints are available for:
 - Photo by <a href="https://unsplash.com/@ryan_riggins?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ryan Riggins</a> on <a href="https://unsplash.com/photos/white-ceramic-mug-on-brown-wooden-table-9v7UJS92HYc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 - Photo by <a href="https://unsplash.com/@micheile?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">micheile henderson</a> on <a href="https://unsplash.com/photos/clothes-hanging-on-white-rack-FpPcoOAk5PI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 - Photo by <a href="https://unsplash.com/@silvana_carlos?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Silvana Carlos</a> on <a href="https://unsplash.com/photos/green-blue-and-white-balloon-5Qajp1_80BA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+- <a href="https://www.freepik.com/free-psd/view-sofa-interior-design-decor_320731945.htm#fromView=keyword&page=1&position=8&uuid=6ea8ce7f-abe5-4f0b-a81a-126e188d903a">Image by freepik</a>
 
 ## TODO:
-- The status codes returned for some of the conditions is not right (in the API endpoints)
+- Need to go over some of the status codes, mostly the error ones that are returned from helper functions

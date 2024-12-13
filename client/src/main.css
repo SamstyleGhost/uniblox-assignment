@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Skyer";
+  src: url("/fonts/Skyer.otf")
+}
+
+@layer base {
+  html {
+    font-family: "Antic Slab", system-ui, sans-serif;
+  }
+}

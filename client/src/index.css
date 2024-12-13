@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Agu+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap');
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "./styles/homepage.css"
+@import "./main.css";
+@import "./styles/homepage.css";

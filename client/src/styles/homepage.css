@@ -5,3 +5,8 @@
 .homepage_image {
   @apply object-cover w-full h-full absolute blur-md hover:scale-125 duration-500
 }
+
+
+.homepage_title > span {
+  @apply font-bold text-7xl md:text-[112px] font-agu md:text-left text-center
+}

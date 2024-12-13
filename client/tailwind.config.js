@@ -1,23 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        agu: ["Agu Display", "serif"],
+        skyer: ["Skyer", "serif"]
+      },
       colors: {
-        background: "#EAE7DC",
-        text: "#0B0308",
-        primary: "#E85A4F",
-        secondary: "#8E8D8A",
-        accent: "#D8C3A5"
+        text: "#050315",
+        background: "#fbfbfe",
+        primary: "#2f27ce",
+        secondary: "#dedcff",
+        accent: "#3de456",
       },
       maxWidth: {
         page: "1800px",
-      }
+      },
     },
   },
   plugins: [],
-}
-
+};
