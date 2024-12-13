@@ -50,7 +50,7 @@ const Checkoutpage = () => {
 
     };
     checkout()
-  }, [coupons, customerID])
+  }, [customerID])
 
   return (
     <div>Checkoutpage</div>

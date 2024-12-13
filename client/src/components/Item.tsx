@@ -66,6 +66,10 @@ const Item : React.FC<ItemProps> = ({ item }) => {
     setQuantity(0);
   }
   
+  if(!customerID) {
+    return <div>Loading</div>
+  }
+  
   return (
     <div className="w-full h-full flex gap-4 md:flex-row flex-col pt-4">
       <div className="md:w-1/2 w-full flex flex-col py-8">

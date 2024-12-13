@@ -215,6 +215,7 @@ API endpoints are available for:
 - There is some redundant & repeated code in the server. Almost all of it is due to the work with JSON files. A database would fix that. And building an ORM simulating middleware would be a bit more time-consuming I suppose
 - In hindsight, having a seperate file for coupons was a small mistake, just an additional field in the users file would have done the job better
 - On the client side, havent really compressed the images and models much. Also, right now everything resides on the server itself, but using a storage system would ease the burden and also make working with the assets better.
+- The frontend doesnt have feedbacks for when an API works or doesnt work
 
 
 ## Photo credits:

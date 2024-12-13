@@ -20,8 +20,13 @@
   },
   {
     "user_id": "39490ad6-7cc2-42f6-8887-3f29749dbb42",
-    "cart": [],
-    "total_cart_value": 0
+    "cart": [
+      {
+        "item_id": 3,
+        "quantity": 4
+      }
+    ],
+    "total_cart_value": 79.96
   },
   {
     "user_id": "82aa07b3-e962-4246-a162-f278940b4720",
@@ -40,6 +45,11 @@
   },
   {
     "user_id": "847f38fa-bf27-43b1-a871-93c1810098c8",
+    "cart": [],
+    "total_cart_value": 0
+  },
+  {
+    "user_id": "b49548b1-0185-4264-8425-ee62625a0a04",
     "cart": [],
     "total_cart_value": 0
   }

@@ -206,5 +206,25 @@
     ],
     "order_value": 710.937,
     "discount": 78.993004
+  },
+  {
+    "order_id": 3,
+    "user_id": "b49548b1-0185-4264-8425-ee62625a0a04",
+    "items": [
+      {
+        "item_id": 1,
+        "quantity": 4
+      },
+      {
+        "item_id": 2,
+        "quantity": 3
+      },
+      {
+        "item_id": 3,
+        "quantity": 2
+      }
+    ],
+    "order_value": 509.91,
+    "discount": 0
   }
 ]
