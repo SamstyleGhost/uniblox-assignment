@@ -4,7 +4,10 @@
   - node: v22.11.0
   - npm: v10.9.0
   - go: v1.22.5
-- Also, the env file in the client is NOT a mistake
+
+## Attention:
+The app is on the heavier side of things due to detailed 3d models and images contained in the repo itself. In actual deployments, these would be in a separately hosted storage system and compressed
+- ![File sizes for the client directory](<File sizes.png>)
 
 ## Setup
 1. git clone
