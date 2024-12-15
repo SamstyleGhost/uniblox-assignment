@@ -28,7 +28,9 @@ const Cartpage: React.FC = () => {
       } else {
         cid = customerID
       }
-      const response : AxiosResponse<CartResponseType> = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/${cid}`)
+      const response : AxiosResponse<CartResponseType> = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/get-cart`, {
+        user_id: customerID
+      })
       console.log(response);
       setTotalValue(response.data.user.total_cart_value)
       setCustomerCart(response.data.user.cart)
