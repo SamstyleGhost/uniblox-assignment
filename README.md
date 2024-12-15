@@ -18,6 +18,15 @@ The app is on the heavier side of things due to detailed 3d models and images co
 6. npm install
 7. npm run dev
 
+## Testing
+To run unit tests, it is essential to change the filepaths at the top of the helpers file:
+  - itemsPath : data/items.json -> ../data/items.json
+  - usersPath : data/users.json -> ../data/users.json
+  - ordersPath : data/orders.json -> ../data/orders.json
+
+#### Need to add additional test cases to test direct API endpoints. Current tests only check the helper functions  
+
+
 ## Features
 - The backend of the project is built with [Go](https://go.dev/doc/)
   - Used [fiber](https://github.com/gofiber/fiber) as the backend framework
@@ -82,8 +91,14 @@ API endpoints are available for:
   }
   ```
 
-- ``` GET /user/:id ```
+- ``` POST /user/get-cart ```
   - Sends the user's cart
+  - Request :
+  ```
+  {
+    "user_id": "85090ac9-9066-4979-8a64-91b4a6016bbc"
+  }
+  ```
   - Response: 
   ```
   {
@@ -93,9 +108,13 @@ API endpoints are available for:
             {
                 "item_id": 2,
                 "quantity": 6
+            },
+            {
+                "item_id": 2,
+                "quantity": 6
             }
         ],
-        "total_cart_value": 539.94
+        "total_cart_value": 1079.88
     }
   }
   ```
@@ -215,7 +234,6 @@ API endpoints are available for:
   - Also checkout cannot be done if a cart is empty
 
 ## Needed optimizations
-- There is some redundant & repeated code in the server. Almost all of it is due to the work with JSON files. A database would fix that. And building an ORM simulating middleware would be a bit more time-consuming I suppose
 - In hindsight, having a seperate file for coupons was a small mistake, just an additional field in the users file would have done the job better
 - On the client side, havent really compressed the images and models much. Also, right now everything resides on the server itself, but using a storage system would ease the burden and also make working with the assets better.
 - The frontend doesnt have feedbacks for when an API works or doesnt work

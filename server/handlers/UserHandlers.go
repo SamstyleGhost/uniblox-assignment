@@ -14,24 +14,9 @@ Request:
 */
 func AddUser(c *fiber.Ctx) error {
 
-	payload := struct {
-		ID uuid.UUID `json:"user_id"`
-	}{}
+	userID := c.Locals("user_id").(uuid.UUID)
 
-	// Would return error if the request body is not set correctly
-	if err := c.BodyParser(&payload); err != nil {
-		return c.Status(400).JSON(&fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	if payload.ID == uuid.Nil {
-		return c.Status(400).JSON(&fiber.Map{
-			"error": "Nil uuid received",
-		})
-	}
-
-	if err := helpers.AddUserToUsers(payload.ID); err != nil {
+	if err := helpers.AddUserToUsers(userID); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
 		})
@@ -43,7 +28,7 @@ func AddUser(c *fiber.Ctx) error {
 }
 
 /*
-GET
+POST
 Parameters:
 
 	id: uuid
@@ -54,14 +39,7 @@ Response:
 */
 func GetUserCart(c *fiber.Ctx) error {
 
-	userParam := c.Params("id")
-
-	userID, err := uuid.Parse(userParam)
-	if err != nil {
-		return c.Status(400).JSON(&fiber.Map{
-			"error": err.Error(),
-		})
-	}
+	userID := c.Locals("user_id").(uuid.UUID)
 
 	user, err := helpers.GetUserCart(userID)
 	if err != nil {
@@ -90,16 +68,23 @@ Response:
 func AddItemToCart(c *fiber.Ctx) error {
 
 	payload := struct {
-		UserID   uuid.UUID `json:"user_id"`
-		ItemID   int       `json:"item_id"`
-		Quantity int       `json:"quantity"`
+		ItemID   int `json:"item_id"`
+		Quantity int `json:"quantity"`
 	}{}
+
+	userID := c.Locals("user_id").(uuid.UUID)
 
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
 			"error":   err.Error(),
 			"message": "Payload structure incorrect",
+		})
+	}
+
+	if userID == uuid.Nil {
+		return c.Status(400).JSON(&fiber.Map{
+			"error": "Nil uuid received",
 		})
 	}
 
@@ -110,7 +95,7 @@ func AddItemToCart(c *fiber.Ctx) error {
 		})
 	}
 
-	cart, err := helpers.AddItemToCart(payload.UserID, payload.ItemID, payload.Quantity)
+	cart, err := helpers.AddItemToCart(userID, payload.ItemID, payload.Quantity)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
@@ -140,10 +125,10 @@ Response:
 func Checkout(c *fiber.Ctx) error {
 
 	payload := struct {
-		ID     uuid.UUID `json:"user_id"`
 		Coupon uuid.UUID `json:"coupon_code"`
 	}{}
 
+	userID := c.Locals("user_id").(uuid.UUID)
 	// Would return error if the request body is not set correctly
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(400).JSON(&fiber.Map{
@@ -151,7 +136,7 @@ func Checkout(c *fiber.Ctx) error {
 		})
 	}
 
-	user, err := helpers.GetUserCart(payload.ID)
+	user, err := helpers.GetUserCart(userID)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
@@ -169,29 +154,29 @@ func Checkout(c *fiber.Ctx) error {
 
 	// Validate coupon if provided
 	if payload.Coupon != uuid.Nil {
-		discount, _ = helpers.ValidateCoupon(payload.Coupon, payload.ID)
+		discount, _ = helpers.ValidateCoupon(payload.Coupon, userID)
 	}
 
 	// Give a new coupon every 3rd checkout
-	newCoupon, _ := helpers.GenerateCoupon(payload.ID)
+	newCoupon, _ := helpers.GenerateCoupon(userID)
 
 	var discountPrice float32
 	totalPrice := user.CartValue
 
 	if discount {
-		discountPrice = user.CartValue * 0.1 // 10% discount if coupon is valid
+		discountPrice = user.CartValue * 0.1
 		totalPrice -= discountPrice
 	}
 
 	// Add to orders.json
-	if err := helpers.AddOrder(payload.ID, user.Cart, totalPrice, discountPrice); err != nil {
+	if err := helpers.AddOrder(userID, user.Cart, totalPrice, discountPrice); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
 		})
 	}
 
 	// Empty cart & revise cart_value to 0
-	if err := helpers.EmptyCart(payload.ID); err != nil {
+	if err := helpers.EmptyCart(userID); err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
 		})
@@ -219,17 +204,10 @@ Response:
 	userCouponse: []models.Coupon{} - The coupons belonging to the user
 */
 func CheckCoupons(c *fiber.Ctx) error {
-	payload := struct {
-		UserID uuid.UUID `json:"user_id"`
-	}{}
 
-	if err := c.BodyParser(&payload); err != nil {
-		return c.Status(400).JSON(&fiber.Map{
-			"error": err.Error(),
-		})
-	}
+	userID := c.Locals("user_id").(uuid.UUID)
 
-	userCoupons, err := helpers.CheckCoupons(payload.UserID)
+	userCoupons, err := helpers.CheckCoupons(userID)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"error": err.Error(),
