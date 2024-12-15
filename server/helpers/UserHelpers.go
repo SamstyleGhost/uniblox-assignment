@@ -2,37 +2,27 @@ package helpers
 
 import (
 	"fmt"
-	"io"
-	"os"
-	"path/filepath"
 
-	"github.com/SamstyleGhost/uniblox-assignment/models"
 	"github.com/google/uuid"
-	jsoniter "github.com/json-iterator/go"
+
+	jsonfileworker "github.com/SamstyleGhost/uniblox-assignment/lib/json-file-worker"
+	"github.com/SamstyleGhost/uniblox-assignment/models"
 )
 
 // A counter variable to count the number of orders
 // Another way was to count the len of the array in orders.json
-var counter = 0
+var (
+	counter         = 0
+	usersFilePath   = "data/users.json"
+	ordersFilePath  = "data/orders.json"
+	couponsFilePath = "data/coupons.json"
+)
 
+// The id received to this function is guaranteed to be a valid uuid. The check for validity has been done in the handler itself
 func AddUserToUsers(id uuid.UUID) error {
 
-	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return err
-	}
-
-	defer usersFile.Close()
-
-	byteValue, err := io.ReadAll(usersFile)
-	if err != nil {
-		return err
-	}
-
 	var users []models.User
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-	err = json.Unmarshal(byteValue, &users)
+	err := jsonfileworker.GetAllObjects(usersFilePath, &users)
 	if err != nil {
 		return err
 	}
@@ -43,16 +33,7 @@ func AddUserToUsers(id uuid.UUID) error {
 
 	users = append(users, *newUser)
 
-	updatedUsers, err := json.MarshalIndent(users, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	if err = os.Truncate(pathToUsersFile, 0); err != nil {
-		return err
-	}
-
-	_, err = usersFile.WriteAt(updatedUsers, 0)
+	err = jsonfileworker.SetAllObjects(usersFilePath, users)
 	if err != nil {
 		return err
 	}
@@ -60,25 +41,10 @@ func AddUserToUsers(id uuid.UUID) error {
 	return nil
 }
 
-func TraverseUsers(id uuid.UUID) ([]models.User, error) {
-
-	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	usersFile, err := os.Open(pathToUsersFile)
-	if err != nil {
-		return nil, err
-	}
-
-	defer usersFile.Close()
-
-	byteValue, err := io.ReadAll(usersFile)
-	if err != nil {
-		return nil, err
-	}
+func TraverseUsers() ([]models.User, error) {
 
 	var users []models.User
-
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-	err = json.Unmarshal(byteValue, &users)
+	err := jsonfileworker.GetAllObjects(usersFilePath, &users)
 	if err != nil {
 		return nil, err
 	}
@@ -88,23 +54,9 @@ func TraverseUsers(id uuid.UUID) ([]models.User, error) {
 
 func AddItemToCart(userID uuid.UUID, itemID int, quantity int) ([]models.CartItem, error) {
 
-	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return nil, err
-	}
-
-	defer usersFile.Close()
-
-	byteValue, err := io.ReadAll(usersFile)
-	if err != nil {
-		return nil, err
-	}
-
 	var users []models.User
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-	err = json.Unmarshal(byteValue, &users)
+	err := jsonfileworker.GetAllObjects(usersFilePath, &users)
 	if err != nil {
 		return nil, err
 	}
@@ -123,19 +75,9 @@ func AddItemToCart(userID uuid.UUID, itemID int, quantity int) ([]models.CartIte
 
 			users[i].Cart = append(users[i].Cart, *itemToAdd)
 			users[i].CartValue += requestedItem.Price * float32(quantity)
-			updatedUsers, err := json.MarshalIndent(users, "", "  ")
-			if err != nil {
-				return nil, err
-			}
 
-			usersFile.Close()
-			usersFile, err = os.OpenFile(pathToUsersFile, os.O_WRONLY|os.O_TRUNC, 0755)
-			if err != nil {
-				return nil, err
-			}
-			defer usersFile.Close()
+			err = jsonfileworker.SetAllObjects(usersFilePath, users)
 
-			_, err = usersFile.Write(updatedUsers)
 			if err != nil {
 				return nil, err
 			}
@@ -148,7 +90,7 @@ func AddItemToCart(userID uuid.UUID, itemID int, quantity int) ([]models.CartIte
 
 func GetUserCart(userID uuid.UUID) (models.User, error) {
 
-	users, err := TraverseUsers(userID)
+	users, err := TraverseUsers()
 	if err != nil {
 		return models.User{}, err
 	}
@@ -165,22 +107,9 @@ func GetUserCart(userID uuid.UUID) (models.User, error) {
 
 func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32, discount float32) error {
 
-	pathToOrdersFile, _ := filepath.Abs("data/orders.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	ordersFile, err := os.OpenFile(pathToOrdersFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return err
-	}
-
-	defer ordersFile.Close()
-
-	byteValue, err := io.ReadAll(ordersFile)
-	if err != nil {
-		return err
-	}
-
 	var orders []models.Order
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-	err = json.Unmarshal(byteValue, &orders)
+
+	err := jsonfileworker.GetAllObjects(ordersFilePath, &orders)
 	if err != nil {
 		return err
 	}
@@ -194,16 +123,7 @@ func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32,
 
 	orders = append(orders, *newOrder)
 
-	updatedOrders, err := json.MarshalIndent(orders, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	if err = os.Truncate(pathToOrdersFile, 0); err != nil {
-		return err
-	}
-
-	_, err = ordersFile.WriteAt(updatedOrders, 0)
+	err = jsonfileworker.SetAllObjects(ordersFilePath, orders)
 	if err != nil {
 		return err
 	}
@@ -215,24 +135,9 @@ func AddOrder(userID uuid.UUID, cartItems []models.CartItem, orderValue float32,
 
 func EmptyCart(userID uuid.UUID) error {
 
-	pathToUsersFile, _ := filepath.Abs("data/users.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	usersFile, err := os.OpenFile(pathToUsersFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return err
-	}
-
-	defer usersFile.Close()
-
-	byteValue, err := io.ReadAll(usersFile)
-	if err != nil {
-		return err
-	}
-
 	var users []models.User
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-	err = json.Unmarshal(byteValue, &users)
-	if err != nil {
+	if err := jsonfileworker.GetAllObjects(usersFilePath, &users); err != nil {
 		return err
 	}
 
@@ -241,22 +146,11 @@ func EmptyCart(userID uuid.UUID) error {
 
 			users[i].Cart = []models.CartItem{}
 			users[i].CartValue = 0
-			updatedUsers, err := json.MarshalIndent(users, "", "  ")
-			if err != nil {
+
+			if err := jsonfileworker.SetAllObjects(usersFilePath, &users); err != nil {
 				return err
 			}
 
-			usersFile.Close()
-			usersFile, err = os.OpenFile(pathToUsersFile, os.O_WRONLY|os.O_TRUNC, 0755)
-			if err != nil {
-				return err
-			}
-			defer usersFile.Close()
-
-			_, err = usersFile.Write(updatedUsers)
-			if err != nil {
-				return err
-			}
 			return nil
 		}
 	}
@@ -265,27 +159,13 @@ func EmptyCart(userID uuid.UUID) error {
 }
 
 func GenerateCoupon(userID uuid.UUID) (uuid.UUID, error) {
+
+	// Coupons will only be generated for every 3rd order
 	if counter%3 == 0 {
 		coupon := uuid.New()
-
-		pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-		couponsFile, err := os.OpenFile(pathToCouponsFile, os.O_RDWR|os.O_CREATE, 0755)
-		if err != nil {
-			return uuid.Nil, err
-		}
-
-		defer couponsFile.Close()
-
-		byteValue, err := io.ReadAll(couponsFile)
-		if err != nil {
-			return uuid.Nil, err
-		}
-
 		var coupons []models.Coupon
-		var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-		err = json.Unmarshal(byteValue, &coupons)
-		if err != nil {
+		if err := jsonfileworker.GetAllObjects(couponsFilePath, &coupons); err != nil {
 			return uuid.Nil, err
 		}
 
@@ -294,20 +174,8 @@ func GenerateCoupon(userID uuid.UUID) (uuid.UUID, error) {
 		newCoupon.CouponCode = coupon
 
 		coupons = append(coupons, *newCoupon)
-		updatedCoupons, err := json.MarshalIndent(coupons, "", "  ")
-		if err != nil {
-			return uuid.Nil, err
-		}
 
-		couponsFile.Close()
-		couponsFile, err = os.OpenFile(pathToCouponsFile, os.O_WRONLY|os.O_TRUNC, 0755)
-		if err != nil {
-			return uuid.Nil, err
-		}
-		defer couponsFile.Close()
-
-		_, err = couponsFile.Write(updatedCoupons)
-		if err != nil {
+		if err := jsonfileworker.SetAllObjects(couponsFilePath, &coupons); err != nil {
 			return uuid.Nil, err
 		}
 
@@ -319,27 +187,11 @@ func GenerateCoupon(userID uuid.UUID) (uuid.UUID, error) {
 
 func ValidateCoupon(coupon uuid.UUID, userID uuid.UUID) (bool, error) {
 
-	pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	couponsFile, err := os.OpenFile(pathToCouponsFile, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		return false, err
-	}
-
-	defer couponsFile.Close()
-
-	byteValue, err := io.ReadAll(couponsFile)
-	if err != nil {
-		return false, err
-	}
-
 	var coupons []models.Coupon
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-	err = json.Unmarshal(byteValue, &coupons)
-	if err != nil {
+	if err := jsonfileworker.GetAllObjects(couponsFilePath, &coupons); err != nil {
 		return false, err
 	}
-
 	index := -1
 	for i, cpn := range coupons {
 		if cpn.CouponCode == coupon && cpn.UserID == userID {
@@ -354,20 +206,7 @@ func ValidateCoupon(coupon uuid.UUID, userID uuid.UUID) (bool, error) {
 
 	coupons = append(coupons[:index], coupons[index+1:]...)
 
-	updatedCoupons, err := json.MarshalIndent(coupons, "", "  ")
-	if err != nil {
-		return false, err
-	}
-
-	couponsFile.Close()
-	couponsFile, err = os.OpenFile(pathToCouponsFile, os.O_WRONLY|os.O_TRUNC, 0755)
-	if err != nil {
-		return false, err
-	}
-	defer couponsFile.Close()
-
-	_, err = couponsFile.Write(updatedCoupons)
-	if err != nil {
+	if err := jsonfileworker.SetAllObjects(couponsFilePath, &coupons); err != nil {
 		return false, err
 	}
 
@@ -376,24 +215,8 @@ func ValidateCoupon(coupon uuid.UUID, userID uuid.UUID) (bool, error) {
 
 func CheckCoupons(userID uuid.UUID) ([]models.Coupon, error) {
 
-	pathToCouponsFile, _ := filepath.Abs("data/coupons.json") // Doesnt really need the error field here as if there are any errors, it will be handled on the next check
-	couponsFile, err := os.Open(pathToCouponsFile)
-	if err != nil {
-		return nil, err
-	}
-
-	defer couponsFile.Close()
-
-	byteValue, err := io.ReadAll(couponsFile)
-	if err != nil {
-		return nil, err
-	}
-
 	var coupons []models.Coupon
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-
-	err = json.Unmarshal(byteValue, &coupons)
-	if err != nil {
+	if err := jsonfileworker.GetAllObjects(couponsFilePath, &coupons); err != nil {
 		return nil, err
 	}
 

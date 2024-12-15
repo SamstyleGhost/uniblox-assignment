@@ -35,8 +35,11 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
 
   useEffect(() => {
     if(customerID) {
-      axios.get(`${import.meta.env.VITE_BASE_URL}/user/${customerID}`)
+      axios.post(`${import.meta.env.VITE_BASE_URL}/user/get-cart`, {
+        user_id: customerID
+      })
         .then((res: AxiosResponse<CartResponseType>) => {
+          console.log(res);
           setCustomerCart(res.data.user.cart);
         })
         .catch((err) => {
